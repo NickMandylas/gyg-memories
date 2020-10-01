@@ -1,26 +1,30 @@
 {
-  "expo": {
-    "name": "gyg-memories",
-    "slug": "gyg-memories",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": true
-    },
-    "web": {
-      "favicon": "./assets/favicon.png"
-    }
-  }
+	"expo": {
+		"name": "gyg-memories",
+		"slug": "gyg-memories",
+		"version": "1.0.0",
+		"orientation": "portrait",
+		"icon": "./src/assets/icon.png",
+		"entryPoint": "./src/App.tsx",
+		"scheme": "gyg-memories",
+		"splash": {
+			"image": "./src/assets/splash.png",
+			"resizeMode": "contain",
+			"backgroundColor": "#ffffff"
+		},
+		"updates": {
+			"fallbackToCacheTimeout": 0
+		},
+		"assetBundlePatterns": ["**/*"],
+		"ios": {
+			"supportsTablet": true,
+			"bundleIdentifier": "com.nickmandylas.gyg-memories"
+		},
+		"web": {
+			"favicon": "./assets/favicon.png"
+		},
+		"facebookScheme": "fb800134777405567",
+		"facebookAppId": "800134777405567",
+		"facebookDisplayName": "GYG - Memories App"
+	}
 }
