@@ -6,15 +6,18 @@ import {
 	Text,
 	Image,
 	Alert,
+	Platform,
+	SafeAreaView,
 } from "react-native";
 import { ResponseType } from "expo-auth-session";
 import * as Facebook from "expo-auth-session/providers/facebook";
 import { auth } from "../components/Firebase/firebase";
 import { Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
+import { StatusBar } from "expo-status-bar";
 
 interface AuthScreenProps {}
 
-export const AuthScreen: React.FC<AuthScreenProps> = ({}) => {
+const AuthScreen: React.FC<AuthScreenProps> = ({}) => {
 	const [request, response, promptAsync] = Facebook.useAuthRequest({
 		responseType: ResponseType.Token,
 		clientId: "800134777405567",
@@ -31,7 +34,7 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({}) => {
 	}, [response]);
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<View style={styles.box}>
 				<Image
 					source={require("../assets/open-doodles-roller-skating.png")}
@@ -59,7 +62,11 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({}) => {
 						disabled={!request}
 						style={[
 							styles.button,
-							{ backgroundColor: "#000000", marginTop: 10 },
+							{
+								backgroundColor: "#000000",
+								marginTop: 10,
+								display: Platform.OS === "android" ? "none" : "flex",
+							},
 						]}
 					>
 						<MaterialCommunityIcons name="apple" size={30} color="white" />
@@ -71,7 +78,8 @@ export const AuthScreen: React.FC<AuthScreenProps> = ({}) => {
 					</Text>
 				</View>
 			</View>
-		</View>
+			<StatusBar style="auto" />
+		</SafeAreaView>
 	);
 };
 

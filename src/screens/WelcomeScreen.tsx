@@ -7,6 +7,7 @@ import {
 	ScrollView,
 	Image,
 	useWindowDimensions,
+	SafeAreaView,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Pagination } from "../components/Pagination";
@@ -14,7 +15,7 @@ import { useNavigation } from "@react-navigation/native";
 
 interface WelcomeScreenProps {}
 
-export const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
+const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
 	const windowDimensions = useWindowDimensions();
 
 	const [currentIndex, setCurrentIndex] = useState(0);
@@ -47,7 +48,6 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
 				</Text>
 				<Pagination active={0} total={3} paginatorStyle={{ marginTop: 30 }} />
 			</View>
-			<StatusBar style="auto" />
 		</View>,
 		<View style={styles.container}>
 			<View style={styles.box}>
@@ -62,7 +62,6 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
 				</Text>
 				<Pagination active={1} total={3} paginatorStyle={{ marginTop: 30 }} />
 			</View>
-			<StatusBar style="auto" />
 		</View>,
 		<View style={styles.container}>
 			<View style={styles.box}>
@@ -87,12 +86,11 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
 					<Text style={styles.buttonText}>START</Text>
 				</TouchableOpacity>
 			</View>
-			<StatusBar style="auto" />
 		</View>,
 	];
 
 	return (
-		<View style={styles.container}>
+		<SafeAreaView style={styles.container}>
 			<ScrollView
 				pagingEnabled={true}
 				horizontal={true}
@@ -111,7 +109,8 @@ export const WelcomeScreen: React.FC<WelcomeScreenProps> = (props) => {
 					</View>
 				))}
 			</ScrollView>
-		</View>
+			<StatusBar style="auto" />
+		</SafeAreaView>
 	);
 };
 
@@ -121,9 +120,10 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		backgroundColor: "#eee",
+		justifyContent: "center",
+		paddingVertical: 30,
 	},
 	box: {
-		marginVertical: 60,
 		marginHorizontal: 30,
 		borderColor: "#0C0F39",
 		borderWidth: 1,

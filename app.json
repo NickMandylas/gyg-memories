@@ -6,7 +6,7 @@
 		"orientation": "portrait",
 		"icon": "./src/assets/icon.png",
 		"entryPoint": "./src/App.tsx",
-		"scheme": "gyg-memories",
+		"scheme": "dev.expo.client.mdowoptxun6imwgmcuxxv6oayurz6eppqotl6lxif6m5a",
 		"splash": {
 			"image": "./src/assets/splash.png",
 			"resizeMode": "contain",

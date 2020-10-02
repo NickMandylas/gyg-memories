@@ -1,7 +1,3 @@
-import React from "react";
-import { AppLoading, registerRootComponent } from "expo";
-import { StyleSheet } from "react-native";
-import { useFonts } from "expo-font";
 import {
 	Inter_300Light,
 	Inter_400Regular,
@@ -10,6 +6,10 @@ import {
 	Inter_900Black,
 } from "@expo-google-fonts/inter";
 import { KronaOne_400Regular } from "@expo-google-fonts/krona-one";
+import { AppLoading, registerRootComponent } from "expo";
+import { useFonts } from "expo-font";
+import React from "react";
+import { StyleSheet } from "react-native";
 import AppStack from "./navigation/index";
 
 const App: React.FC = () => {

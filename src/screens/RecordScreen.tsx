@@ -1,30 +1,81 @@
-import React, { useEffect, useRef, useState } from "react";
+import { Camera } from "expo-camera";
+import * as Haptics from "expo-haptics";
+import * as MediaLibrary from "expo-media-library";
+import { StatusBar } from "expo-status-bar";
+import React, { RefObject, useEffect, useRef, useState } from "react";
 import {
-	View,
+	Alert,
+	Button,
+	Pressable,
+	SafeAreaView,
 	StyleSheet,
 	Text,
-	SafeAreaView,
-	TouchableWithoutFeedback,
-	Button,
+	View,
 } from "react-native";
-import { Camera } from "expo-camera";
 import { auth } from "../components/Firebase/firebase";
 
 interface RecordScreenProps {}
 
-export const RecordScreen: React.FC<RecordScreenProps> = ({}) => {
-	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
-	const [type, setType] = useState(Camera.Constants.Type.back);
-	const [recording, setRecording] = useState<boolean>(false);
-
+const RecordScreen: React.FC<RecordScreenProps> = ({}) => {
 	const camera = useRef<Camera>(null);
+	const [type, setType] = useState(Camera.Constants.Type.back);
 
+	// Permissions Logic
+	const [hasPermission, setHasPermission] = useState<boolean | null>(null);
 	useEffect(() => {
 		(async () => {
 			const { status } = await Camera.requestPermissionsAsync();
+			await MediaLibrary.requestPermissionsAsync();
 			setHasPermission(status === "granted");
+			console.log(seconds);
 		})();
 	}, []);
+
+	// Timer Logic
+	const [seconds, setSeconds] = useState<number>(0);
+	const [recording, setRecording] = useState<boolean>(false);
+	useEffect(() => {
+		// countdownTimer();
+		let interval: NodeJS.Timeout | null = null;
+		if (recording) {
+			interval = setInterval(() => {
+				setSeconds((seconds) => seconds + 1);
+			}, 1000);
+		} else if (!recording && seconds !== 0) {
+			clearInterval(interval!);
+		}
+
+		console.log(seconds);
+		return () => clearInterval(interval!);
+	}, [seconds, recording]);
+
+	// Camera & Recording Logic
+	const [video, setVideo] = useState<string>("");
+	useEffect(() => {
+		(async () => {
+			if (video) {
+				if (seconds <= 5) {
+					Alert.alert("Too Short!", "Video needs to be longer than 5 seconds.");
+				} else {
+					await MediaLibrary.saveToLibraryAsync(video);
+				}
+				setVideo("");
+				setSeconds(0);
+			}
+		})();
+	}, [video, seconds]);
+
+	const onRecordVideo = async (camera: RefObject<Camera>) => {
+		if (camera.current) {
+			setRecording(!recording);
+			await Haptics.impactAsync();
+			const video = await camera.current!.recordAsync({
+				maxDuration: 30,
+				quality: "1080p",
+			});
+			setVideo(video.uri);
+		}
+	};
 
 	// if (hasPermission === null) {
 	// 	return <View />;
@@ -68,10 +119,15 @@ export const RecordScreen: React.FC<RecordScreenProps> = ({}) => {
 						alignItems: "center",
 					}}
 				>
-					<TouchableWithoutFeedback
-						onPress={async () => {
+					<Pressable
+						disabled={recording}
+						onPressIn={async () => {
+							onRecordVideo(camera);
+						}}
+						onPressOut={async () => {
 							setRecording(!recording);
-							await camera.current?.takePictureAsync();
+							camera.current!.stopRecording();
+							await Haptics.impactAsync();
 						}}
 					>
 						<View
@@ -82,10 +138,11 @@ export const RecordScreen: React.FC<RecordScreenProps> = ({}) => {
 								borderRadius: 30,
 							}}
 						/>
-					</TouchableWithoutFeedback>
+					</Pressable>
 				</View>
 				<Button title="Logout" onPress={() => auth().signOut()} />
 			</View>
+			<StatusBar style="auto" />
 		</SafeAreaView>
 	);
 };

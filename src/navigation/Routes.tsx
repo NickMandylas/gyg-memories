@@ -1,11 +1,10 @@
-import React, { useContext, useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-
-import { auth } from "../components/Firebase/firebase";
-import AuthStack from "./AuthStack";
-import AppStack from "./AppStack";
-import { AuthUserContext } from "./AuthUserProvider";
+import React, { useContext, useEffect, useState } from "react";
 import { ActivityIndicator, View } from "react-native";
+import { auth } from "../components/Firebase/firebase";
+import AppStack from "./AppStack";
+import AuthStack from "./AuthStack";
+import { AuthUserContext } from "./AuthUserProvider";
 
 export default function Routes() {
 	const { user, setUser }: any = useContext(AuthUserContext);
